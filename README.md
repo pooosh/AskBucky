@@ -2,7 +2,7 @@
 
 <div align="center">
   <img src="NLWeb/static/images/bucky_logo.svg" alt="AskBucky Logo" width="200"/>
-  <h3>Your AI Dining Companion</h3>
+  <h3>Your UW-Madison AI Dining Companion</h3>
   <p>AskBucky is an intelligent conversational interface that helps you discover, explore, and plan your dining experience with comprehensive menu information and nutritional insights.</p>
   
   <a href="#demo">View Demo</a> •
@@ -12,18 +12,18 @@
 
 ## 📋 Table of Contents
 
-- [Vision](#vision-your-uw-madison-ai-companion)
-- [About The Project](#about-the-project)
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Getting Started](#getting-started)
-- [Usage](#usage)
-- [API Documentation](#api-documentation)
-- [Roadmap](#roadmap)
-- [Contributing](#contributing)
-- [License](#license)
-- [Contact](#contact)
-- [Acknowledgments](#acknowledgments)
+- [Vision](#-vision-your-uw-madison-ai-companion)
+- [About The Project](#-about-the-project)
+- [Features](#-features)
+- [Tech Stack](#-tech-stack)
+- [Getting Started](#-getting-started)
+- [Usage](#-usage)
+- [API Documentation](#-api-documentation)
+- [Roadmap](#-roadmap)
+- [Contributing](#-contributing)
+- [License](#-license)
+- [Contact](#-contact)
+- [Acknowledgments](#-acknowledgments)
 
 ## 🎯 Vision: Your UW-Madison AI Companion
 
@@ -111,12 +111,6 @@ AskBucky transforms how you interact with dining hall menus through natural lang
 - **CSS3 with Flexbox/Grid** - Beautiful, accessible, mobile-responsive styling
 - **Server-Sent Events (SSE)** - Real-time streaming responses
 - **WebSocket Support** - Bidirectional communication for enhanced UX
-
-### **Authentication & Security**
-- **OAuth 2.0** - Secure user authentication and session management
-- **JWT Tokens** - Stateless authentication for API access
-- **CORS Configuration** - Cross-origin resource sharing for web clients
-- **Environment Variables** - Secure API key and configuration management
 
 ### **Development & Deployment**
 - **Git Submodules** - Modular architecture with NLWeb as a submodule
