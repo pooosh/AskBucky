@@ -1,12 +1,5 @@
 # AskBucky 🍽️
 
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stargazers-shield]][stargazers-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
-
 <div align="center">
   <img src="NLWeb/static/images/bucky_logo.svg" alt="AskBucky Logo" width="200"/>
   <h3>Your AI Dining Companion</h3>
@@ -19,10 +12,10 @@
 
 ## 📋 Table of Contents
 
-- [Vision](#-vision-your-uw-madison-ai-companion)
+- [Vision](#vision-your-uw-madison-ai-companion)
 - [About The Project](#about-the-project)
 - [Features](#features)
-- [Built With](#built-with)
+- [Tech Stack](#tech-stack)
 - [Getting Started](#getting-started)
 - [Usage](#usage)
 - [API Documentation](#api-documentation)
@@ -32,7 +25,7 @@
 - [Contact](#contact)
 - [Acknowledgments](#acknowledgments)
 
-### 🎯 Vision: Your UW-Madison AI Companion
+## 🎯 Vision: Your UW-Madison AI Companion
 
 AskBucky is just the beginning! Our ultimate vision is to create a comprehensive one-stop-shop for all things UW-Madison. While we currently focus on dining hall menus and nutrition, we're planning to expand AskBucky into a unified platform that integrates multiple university data sources:
 
@@ -93,31 +86,49 @@ AskBucky transforms how you interact with dining hall menus through natural lang
 - **Real-time Streaming**: Instant responses with server-sent events
 - **OAuth Integration**: Secure user authentication and conversation history
 
-## 🛠️ Built With
+## 🛠️ Tech Stack
 
-### Core Technologies
-- **Python 3.12+** - Backend server and AI processing
-- **AIOHTTP** - Asynchronous web framework
-- **Schema.org** - Semantic data markup
-- **Vector Databases** - Semantic search and retrieval
-- **NLWeb Submodule** - Embedding and MCP Framework
+### **Backend & Core Framework**
+- **Python 3.12+** - High-performance backend server and AI processing
+- **AIOHTTP** - Asynchronous web framework for scalable real-time communication
+- **NLWeb Framework** - Microsoft's enterprise-grade embedding and MCP framework (submodule)
+- **Schema.org** - Semantic data markup for structured information
 
-### AI & Machine Learning
-- **Large Language Models** - OpenAI GPT, Claude, Gemini, and more
-- **Embedding Models** - Text-to-vector conversion for semantic search
-- **RAG Architecture** - Retrieval-Augmented Generation for accurate responses
+### **AI & Machine Learning**
+- **Large Language Models** - OpenAI GPT-4, Claude, Gemini, DeepSeek, and HuggingFace models
+- **Embedding Models** - Text-to-vector conversion for semantic search (text-embedding-3-small, etc.)
+- **RAG Architecture** - Retrieval-Augmented Generation for accurate, grounded responses
+- **Vector Similarity Search** - Semantic matching for relevant menu items
 
-### Frontend & UI
-- **Modern JavaScript** - Responsive chat interface
-- **CSS3** - Beautiful, accessible styling
-- **WebSocket/SSE** - Real-time communication
-- **OAuth 2.0** - Secure authentication
+### **Data Storage & Search**
+- **Vector Databases** - Azure AI Search, Qdrant, Milvus, Elasticsearch for semantic search
+- **PostgreSQL** - Relational data storage for user data and configurations
+- **JSON-LD** - Structured data format for menu information
+- **Redis** - Caching layer for improved performance
 
-### Data & Storage
-- **JSON-LD** - Structured data format
-- **Vector Databases** - Azure AI Search, Qdrant, Milvus, Elasticsearch
-- **PostgreSQL** - Relational data storage
-- **Schema.org** - Standardized data vocabulary
+### **Frontend & User Interface**
+- **Modern JavaScript (ES6+)** - Responsive, interactive chat interface
+- **CSS3 with Flexbox/Grid** - Beautiful, accessible, mobile-responsive styling
+- **Server-Sent Events (SSE)** - Real-time streaming responses
+- **WebSocket Support** - Bidirectional communication for enhanced UX
+
+### **Authentication & Security**
+- **OAuth 2.0** - Secure user authentication and session management
+- **JWT Tokens** - Stateless authentication for API access
+- **CORS Configuration** - Cross-origin resource sharing for web clients
+- **Environment Variables** - Secure API key and configuration management
+
+### **Development & Deployment**
+- **Git Submodules** - Modular architecture with NLWeb as a submodule
+- **Virtual Environments** - Isolated Python dependencies
+- **Docker Support** - Containerized deployment options
+- **GitHub Actions** - CI/CD pipeline for automated testing and deployment
+
+### **Data Processing & Integration**
+- **Nutrislice API** - Menu data integration from university dining services
+- **Web Scraping** - Automated menu data collection and updates
+- **Data Transformation** - Conversion from raw menu data to structured JSON-LD
+- **Batch Processing** - Efficient loading of large datasets into vector databases
 
 ## 🚀 Getting Started
 
@@ -132,8 +143,8 @@ Before you begin, ensure you have the following installed:
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/your-username/askbucky.git
-   cd askbucky
+   git clone --recurse-submodules https://github.com/pooosh/AskBucky.git
+   cd AskBucky
    ```
 
 2. **Set up virtual environment**
@@ -144,13 +155,13 @@ Before you begin, ensure you have the following installed:
 
 3. **Install dependencies**
    ```bash
-   pip install -r requirements.txt
+   pip install -r NLWeb/requirements.txt
    ```
 
 4. **Configure environment variables**
    ```bash
-   cp .env.example .env
-   # Edit .env with your API keys and configuration
+   cp NLWeb/.env.template NLWeb/.env
+   # Edit NLWeb/.env with your API keys and configuration
    ```
 
 5. **Set up your API keys**
@@ -166,18 +177,18 @@ Before you begin, ensure you have the following installed:
 6. **Load menu data**
    ```bash
    # Fetch current menu data
-   python pyscripts/fetch_menu.py
+   python NLWeb/pyscripts/fetch_menu.py
    
    # Transform to structured format
-   python pyscripts/nutrislice_to_jsonld.py
+   python NLWeb/pyscripts/nutrislice_to_jsonld.py
    
    # Load into vector database
-   python -m code.python.data_loading.db_load
+   python -m NLWeb.code.python.data_loading.db_load
    ```
 
 7. **Start the server**
    ```bash
-   python -m code.python.app-aiohttp
+   python -m NLWeb.code.python.app-aiohttp
    ```
 
 8. **Access AskBucky**
@@ -306,7 +317,7 @@ AskBucky returns structured JSON responses with:
 - [ ] **Advanced Search**: Semantic search with image recognition
 - [ ] **API Rate Limiting**: Improved scalability and resource management
 
-See the [open issues](https://github.com/your-username/askbucky/issues) for a full list of proposed features and known issues.
+See the [open issues](https://github.com/pooosh/AskBucky/issues) for a full list of proposed features and known issues.
 
 ## 🤝 Contributing
 
@@ -324,27 +335,27 @@ Contributions are what make the open source community such an amazing place to l
 
 1. **Clone your fork**
    ```bash
-   git clone https://github.com/your-username/askbucky.git
-   cd askbucky
+   git clone --recurse-submodules https://github.com/your-username/AskBucky.git
+   cd AskBucky
    ```
 
 2. **Set up development environment**
    ```bash
    python -m venv dev_env
    source dev_env/bin/activate
-   pip install -r requirements.txt
-   pip install -r requirements-dev.txt
+   pip install -r NLWeb/requirements.txt
+   pip install -r NLWeb/requirements-dev.txt
    ```
 
 3. **Run tests**
    ```bash
-   python -m pytest tests/
+   python -m pytest NLWeb/tests/
    ```
 
 4. **Check code quality**
    ```bash
-   flake8 code/
-   black code/
+   flake8 NLWeb/code/
+   black NLWeb/code/
    ```
 
 ### Contribution Guidelines
@@ -356,7 +367,7 @@ Contributions are what make the open source community such an amazing place to l
 
 ### Top Contributors
 
-[![Contributors](https://contrib.rocks/image?repo=your-username/askbucky)](https://github.com/your-username/askbucky/graphs/contributors)
+[![Contributors](https://contrib.rocks/image?repo=pooosh/AskBucky)](https://github.com/pooosh/AskBucky/graphs/contributors)
 
 ## 📄 License
 
@@ -364,9 +375,9 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## 📞 Contact
 
-Your Name - [@your_twitter](https://twitter.com/your_twitter) - email@example.com
+Your Name - piyushshanbhag8@gmail.com
 
-Project Link: [https://github.com/your-username/askbucky](https://github.com/your-username/askbucky)
+Project Link: [https://github.com/pooosh/AskBucky](https://github.com/pooosh/AskBucky)
 
 ## 🙏 Acknowledgments
 
@@ -401,15 +412,15 @@ Project Link: [https://github.com/your-username/askbucky](https://github.com/you
 </div>
 
 <!-- MARKDOWN LINKS & IMAGES -->
-[contributors-shield]: https://img.shields.io/github/contributors/your-username/askbucky.svg?style=for-the-badge
-[contributors-url]: https://github.com/your-username/askbucky/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/your-username/askbucky.svg?style=for-the-badge
-[forks-url]: https://github.com/your-username/askbucky/network/members
-[stargazers-shield]: https://img.shields.io/github/stars/your-username/askbucky.svg?style=for-the-badge
-[stargazers-url]: https://github.com/your-username/askbucky/stargazers
-[issues-shield]: https://img.shields.io/github/issues/your-username/askbucky.svg?style=for-the-badge
-[issues-url]: https://github.com/your-username/askbucky/issues
-[license-shield]: https://img.shields.io/github/license/your-username/askbucky.svg?style=for-the-badge
-[license-url]: https://github.com/your-username/askbucky/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/pooosh/AskBucky.svg?style=for-the-badge
+[contributors-url]: https://github.com/pooosh/AskBucky/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/pooosh/AskBucky.svg?style=for-the-badge
+[forks-url]: https://github.com/pooosh/AskBucky/network/members
+[stargazers-shield]: https://img.shields.io/github/stars/pooosh/AskBucky.svg?style=for-the-badge
+[stargazers-url]: https://github.com/pooosh/AskBucky/stargazers
+[issues-shield]: https://img.shields.io/github/issues/pooosh/AskBucky.svg?style=for-the-badge
+[issues-url]: https://github.com/pooosh/AskBucky/issues
+[license-shield]: https://img.shields.io/github/license/pooosh/AskBucky.svg?style=for-the-badge
+[license-url]: https://github.com/pooosh/AskBucky/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/your-linkedin 
