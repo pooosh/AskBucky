@@ -1,0 +1,4 @@
+[submodule "NLWeb"]
+	path = NLWeb
+	url = https://github.com/nlweb-ai/NLWeb.git
+	branch = main
