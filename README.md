@@ -19,6 +19,7 @@
 
 ## 📋 Table of Contents
 
+- [Vision](#-vision-your-uw-madison-ai-companion)
 - [About The Project](#about-the-project)
 - [Features](#features)
 - [Built With](#built-with)
@@ -30,6 +31,10 @@
 - [License](#license)
 - [Contact](#contact)
 - [Acknowledgments](#acknowledgments)
+
+### 🎯 Vision: Your UW-Madison AI Companion
+
+AskBucky is just the beginning! Our ultimate vision is to create a comprehensive one-stop-shop for all things UW-Madison. While we currently focus on dining hall menus and nutrition, we're planning to expand AskBucky into a unified platform that integrates multiple university data sources:
 
 ## 🎯 About The Project
 
@@ -50,10 +55,6 @@ AskBucky transforms how you interact with dining hall menus through natural lang
 - **Section-Based Navigation**: Explore different dining sections (Fired Up, 1849, Buona Cucina, etc.)
 - **Nutritional Intelligence**: Automatic display of macronutrients and calorie information
 - **Conversational Memory**: Maintains context across multiple queries for seamless interactions
-
-### 🎯 Vision: Your UW-Madison AI Companion
-
-AskBucky is just the beginning! Our ultimate vision is to create a comprehensive one-stop-shop for all things UW-Madison. While we currently focus on dining hall menus and nutrition, we're planning to expand AskBucky into a unified platform that integrates multiple university data sources:
 
 **Future Integrations:**
 - **🏋️ RecWell Data**: Gym schedules, fitness classes, facility availability, and workout recommendations
@@ -99,6 +100,7 @@ AskBucky is just the beginning! Our ultimate vision is to create a comprehensive
 - **AIOHTTP** - Asynchronous web framework
 - **Schema.org** - Semantic data markup
 - **Vector Databases** - Semantic search and retrieval
+- **NLWeb Submodule** - Embedding and MCP Framework
 
 ### AI & Machine Learning
 - **Large Language Models** - OpenAI GPT, Claude, Gemini, and more
