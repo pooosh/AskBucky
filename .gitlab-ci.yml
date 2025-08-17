@@ -1,0 +1,70 @@
+stages:
+  - build
+  - deploy
+
+# Make sure submodules are pulled (your NLWeb-AskBucky fork)
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+  GIT_DEPTH: "0"   # safer when submodules use tags
+
+# ------- BUILD: container image with Kaniko -------
+build-image:
+  image: gcr.io/kaniko-project/executor:latest
+  stage: build
+  before_script:
+    # If your NLWeb submodule is private, uncomment the next line and
+    # set GH_PAT in GitLab CI/CD → Variables (masked, not protected if you build on non-protected branches)
+    # - git config --global url."https://${GH_PAT}:x-oauth-basic@github.com/".insteadOf "https://github.com/"
+    - git submodule sync --recursive
+    - git submodule update --init --recursive
+  script:
+    - export IMAGE="${GCP_REGION}-docker.pkg.dev/${GCP_PROJECT_ID}/${ARTIFACT_REPO}/${SERVICE_NAME}:${CI_COMMIT_SHORT_SHA}"
+    # GCP_SA_KEY is a File-type variable; GitLab exposes it as a path
+    - export GOOGLE_APPLICATION_CREDENTIALS="$GCP_SA_KEY"
+    # Build and push two tags: commit SHA and latest
+    - |
+      /kaniko/executor \
+        --dockerfile "$CI_PROJECT_DIR/Dockerfile" \
+        --context "$CI_PROJECT_DIR" \
+        --destination "$IMAGE" \
+        --destination "${GCP_REGION}-docker.pkg.dev/${GCP_PROJECT_ID}/${ARTIFACT_REPO}/${SERVICE_NAME}:latest"
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: on_success
+
+# ------- DEPLOY: to Cloud Run -------
+deploy-cloud-run:
+  image: google/cloud-sdk:slim
+  stage: deploy
+  needs: ["build-image"]
+  script:
+    - gcloud auth activate-service-account --key-file="$GCP_SA_KEY"
+    - gcloud config set project "$GCP_PROJECT_ID"
+    - gcloud config set run/region "$GCP_REGION"
+    # Deploy the image we just built. Expose port 8080 and set the runtime env vars you rely on.
+    - export IMAGE="${GCP_REGION}-docker.pkg.dev/${GCP_PROJECT_ID}/${ARTIFACT_REPO}/${SERVICE_NAME}:${CI_COMMIT_SHORT_SHA}"
+    - |
+      gcloud run deploy "$SERVICE_NAME" \
+        --image "$IMAGE" \
+        --platform managed \
+        --allow-unauthenticated \
+        --port 8080 \
+        --set-env-vars \
+          PORT=8080,\
+          HOST=0.0.0.0,\
+          NLWEB_CONFIG_DIR=/app/NLWeb/config,\
+          NLWEB_OUTPUT_DIR=/app,\
+          PYTHONPATH=/app/NLWeb/code/python,\
+          OPENAI_API_KEY=$OPENAI_API_KEY,\
+          NUTRISLICE_API_URL=https://dining.wisc.edu/api,\
+          DINING_HALL_SLUGS=four-lakes-market,gordon-avenue-market,lizs-market,rhetas-market,lowell-market,\
+          MEAL_TYPES=breakfast,lunch,dinner,\
+          RAW_DIR=/app/NLWeb/raw_menus,\
+          JSONLD_DIR=/app/NLWeb/data/jsonld,\
+          NLWEB_JSON_DATA_DIR=/app/NLWeb/data/jsonld,\
+          NLWEB_CACHE_DIR=/app/NLWeb/.cache
+  environment:
+    name: production
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: on_success
