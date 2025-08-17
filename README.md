@@ -1,14 +1,25 @@
 # AskBucky 🍽️
 
 <div align="center">
-  <img src="NLWeb/static/images/bucky_logo.svg" alt="AskBucky Logo" width="200"/>
+  <img src="static/images/bucky_logo.svg" alt="AskBucky Logo" width="200"/>
   <h3>Your UW-Madison AI Dining Companion</h3>
   <p>AskBucky is an intelligent conversational interface that helps you discover, explore, and plan your dining experience with comprehensive menu information and nutritional insights.</p>
   
-  <a href="#demo">View Demo</a> •
-  <a href="#report-bug">Report Bug</a> •
-  <a href="#request-feature">Request Feature</a>
+  <a href="#www.askbucky.com">View Demo</a> •
+  <a href="#https://forms.gle/eZrJ5zyoJzoeGNSN7">Report Bug</a> •
+  <a href="#https://forms.gle/hEvYrQEgcgFP376j8">Request Feature</a>
 </div>
+
+## 🔧 Technical Implementation
+
+**📖 For detailed technical information, architecture, and implementation details, see the [NLWeb-AskBucky README](https://github.com/pooosh/NLWeb-AskBucky#readme).**
+
+This includes:
+- Complete data pipeline workflow
+- Automation scripts and processes
+- Configuration and setup instructions
+- Architecture diagrams
+- Development guidelines
 
 ## 📋 Table of Contents
 
@@ -18,16 +29,24 @@
 - [Tech Stack](#-tech-stack)
 - [Getting Started](#-getting-started)
 - [Usage](#-usage)
-- [API Documentation](#-api-documentation)
 - [Roadmap](#-roadmap)
 - [Contributing](#-contributing)
 - [License](#-license)
 - [Contact](#-contact)
-- [Acknowledgments](#-acknowledgments)
 
 ## 🎯 Vision: Your UW-Madison AI Companion
 
 AskBucky is just the beginning! Our ultimate vision is to create a comprehensive one-stop-shop for all things UW-Madison. While we currently focus on dining hall menus and nutrition, we're planning to expand AskBucky into a unified platform that integrates multiple university data sources:
+
+**Future Integrations:**
+- **🏋️ RecWell Data**: Gym schedules, fitness classes, facility availability
+- **📅 University Events**: Integration with today.wisc.edu for campus events
+- **📚 Academic Resources**: Course information, library hours, study spaces
+- **🚌 Transportation**: Bus schedules, parking information, campus navigation
+- **🏠 Housing & Facilities**: Residence hall information, building hours
+- **🎓 Student Services**: Career services, health resources, student organizations
+
+**The Goal**: Transform AskBucky into your personal AI assistant for everything UW-Madison, making campus life more connected, informed, and engaging through natural language conversations.
 
 ## 🎯 About The Project
 
@@ -49,16 +68,6 @@ AskBucky transforms how you interact with dining hall menus through natural lang
 - **Nutritional Intelligence**: Automatic display of macronutrients and calorie information
 - **Conversational Memory**: Maintains context across multiple queries for seamless interactions
 
-**Future Integrations:**
-- **🏋️ RecWell Data**: Gym schedules, fitness classes, facility availability, and workout recommendations
-- **📅 University Events**: Integration with today.wisc.edu for campus events, lectures, and activities
-- **📚 Academic Resources**: Course information, library hours, study spaces, and academic support
-- **🚌 Transportation**: Bus schedules, parking information, and campus navigation
-- **🏠 Housing & Facilities**: Residence hall information, building hours, and maintenance requests
-- **🎓 Student Services**: Career services, health resources, and student organization information
-
-**The Goal**: Transform AskBucky into your personal AI assistant for everything UW-Madison, making campus life more connected, informed, and engaging through natural language conversations.
-
 ## ✨ Features
 
 ### 🍽️ Menu Discovery
@@ -79,61 +88,26 @@ AskBucky transforms how you interact with dining hall menus through natural lang
 - **Multi-Modal Responses**: List, summarize, or generate comprehensive answers
 - **Tool Integration**: Specialized tools for different query types
 
-### 🔧 Technical Excellence
-- **Scalable Architecture**: Built on NLWeb's robust framework
-- **Multi-Backend Support**: Azure AI Search, Qdrant, Milvus, and more
-- **LLM Flexibility**: OpenAI, DeepSeek, Gemini, Anthropic, and HuggingFace models
-- **Real-time Streaming**: Instant responses with server-sent events
-- **OAuth Integration**: Secure user authentication and conversation history
-
 ## 🛠️ Tech Stack
 
-### **Backend & Core Framework**
-- **Python 3.12+** - High-performance backend server and AI processing
-- **AIOHTTP** - Asynchronous web framework for scalable real-time communication
-- **NLWeb Framework** - Microsoft's enterprise-grade embedding and MCP framework (submodule)
-- **Schema.org** - Semantic data markup for structured information
+**Core Technologies:**
+- **Python 3.12+** - Backend server and AI processing
+- **AIOHTTP** - Asynchronous web framework
+- **NLWeb Framework** - Microsoft's enterprise-grade embedding and MCP framework
+- **Large Language Models** - OpenAI GPT-4, Claude, Gemini, and more
+- **Vector Databases** - Azure AI Search, Qdrant, Milvus, Elasticsearch
+- **Schema.org** - Structured data markup
 
-### **AI & Machine Learning**
-- **Large Language Models** - OpenAI GPT-4, Claude, Gemini, DeepSeek, and HuggingFace models
-- **Embedding Models** - Text-to-vector conversion for semantic search (text-embedding-3-small, etc.)
-- **RAG Architecture** - Retrieval-Augmented Generation for accurate, grounded responses
-- **Vector Similarity Search** - Semantic matching for relevant menu items
-
-### **Data Storage & Search**
-- **Vector Databases** - Azure AI Search, Qdrant, Milvus, Elasticsearch for semantic search
-- **PostgreSQL** - Relational data storage for user data and configurations
-- **JSON-LD** - Structured data format for menu information
-- **Redis** - Caching layer for improved performance
-
-### **Frontend & User Interface**
-- **Modern JavaScript (ES6+)** - Responsive, interactive chat interface
-- **CSS3 with Flexbox/Grid** - Beautiful, accessible, mobile-responsive styling
-- **Server-Sent Events (SSE)** - Real-time streaming responses
-- **WebSocket Support** - Bidirectional communication for enhanced UX
-
-### **Development & Deployment**
-- **Git Submodules** - Modular architecture with NLWeb as a submodule
-- **Virtual Environments** - Isolated Python dependencies
-- **Docker Support** - Containerized deployment options
-- **GitHub Actions** - CI/CD pipeline for automated testing and deployment
-
-### **Data Processing & Integration**
-- **Nutrislice API** - Menu data integration from university dining services
-- **Web Scraping** - Automated menu data collection and updates
-- **Data Transformation** - Conversion from raw menu data to structured JSON-LD
-- **Batch Processing** - Efficient loading of large datasets into vector databases
+**For detailed technical implementation, see the [NLWeb-AskBucky README](https://github.com/pooosh/NLWeb-AskBucky#readme).**
 
 ## 🚀 Getting Started
 
 ### Prerequisites
 
-Before you begin, ensure you have the following installed:
 - **Python 3.12+** - [Download Python](https://www.python.org/downloads/)
 - **Git** - [Download Git](https://git-scm.com/downloads)
-- **Virtual Environment** - Python venv or conda
 
-### Installation
+### Quick Setup
 
 1. **Clone the repository**
    ```bash
@@ -141,53 +115,26 @@ Before you begin, ensure you have the following installed:
    cd AskBucky
    ```
 
-2. **Set up virtual environment**
+2. **Set up environment**
    ```bash
+   cd NLWeb
    python -m venv myenv
    source myenv/bin/activate  # On Windows: myenv\Scripts\activate
+   pip install -r requirements.txt
    ```
 
-3. **Install dependencies**
+3. **Configure and run**
    ```bash
-   pip install -r NLWeb/requirements.txt
+   cp .env.template .env
+   # Edit .env with your API keys
+   python -m code.python.app-aiohttp
    ```
 
-4. **Configure environment variables**
-   ```bash
-   cp NLWeb/.env.template NLWeb/.env
-   # Edit NLWeb/.env with your API keys and configuration
-   ```
-
-5. **Set up your API keys**
-   ```bash
-   # Add your LLM provider API key
-   OPENAI_API_KEY=your_openai_key_here
-   
-   # Add your vector database configuration
-   AZURE_SEARCH_ENDPOINT=your_azure_endpoint
-   AZURE_SEARCH_KEY=your_azure_key
-   ```
-
-6. **Load menu data**
-   ```bash
-   # Fetch current menu data
-   python NLWeb/pyscripts/fetch_menu.py
-   
-   # Transform to structured format
-   python NLWeb/pyscripts/nutrislice_to_jsonld.py
-   
-   # Load into vector database
-   python -m NLWeb.code.python.data_loading.db_load
-   ```
-
-7. **Start the server**
-   ```bash
-   python -m NLWeb.code.python.app-aiohttp
-   ```
-
-8. **Access AskBucky**
+4. **Access AskBucky**
    - Open your browser to `http://localhost:8000`
    - Start asking questions about the menu!
+
+**For detailed setup instructions, automation workflows, and configuration options, see the [NLWeb-AskBucky README](https://github.com/pooosh/NLWeb-AskBucky#readme).**
 
 ## 💡 Usage
 
@@ -219,70 +166,9 @@ AskBucky understands natural language queries about dining hall menus:
 
 ### Advanced Features
 
-#### Meal Planning
-AskBucky can create comprehensive meal plans:
-- "Plan a nutritious dinner with appetizer, main course, and dessert"
-- "Give me a high-protein meal plan for today"
-
-#### Nutritional Analysis
-Get detailed nutritional information:
-- "What are the ingredients in Chicken Alfredo?"
-- "Compare the nutrition of pizza vs pasta"
-- "Show me items with less than 10g of carbs"
-
-#### Dietary Accommodations
-Filter by dietary restrictions:
-- "Find vegan options"
-- "Show me dairy-free items"
-- "What's available for someone with nut allergies?"
-
-### API Usage
-
-AskBucky provides a REST API for integration:
-
-```bash
-# Basic query
-curl -X POST "http://localhost:8000/ask" \
-  -H "Content-Type: application/json" \
-  -d '{"query": "What\'s for lunch today?"}'
-
-# With specific parameters
-curl -X POST "http://localhost:8000/ask" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "query": "Show me vegetarian options",
-    "site": "four-lakes-market",
-    "generate_mode": "generate",
-    "streaming": true
-  }'
-```
-
-## 📚 API Documentation
-
-### Core Endpoints
-
-#### `/ask` - Main Query Endpoint
-Process natural language queries about menus and nutrition.
-
-**Parameters:**
-- `query` (string, required): Natural language question
-- `site` (string/array): Target dining hall(s)
-- `generate_mode` (string): "list", "summarize", or "generate"
-- `streaming` (boolean): Enable real-time responses
-- `model` (string): LLM model to use
-
-#### `/sites` - Available Sites
-Get list of available dining halls and sections.
-
-#### `/api/oauth/*` - Authentication
-OAuth endpoints for user authentication and conversation history.
-
-### Response Formats
-
-AskBucky returns structured JSON responses with:
-- **Query Results**: Relevant menu items and nutritional data
-- **Metadata**: Source information and confidence scores
-- **Conversation Context**: For maintaining chat history
+- **Meal Planning**: "Plan a nutritious dinner with appetizer, main course, and dessert"
+- **Nutritional Analysis**: "Compare the nutrition of pizza vs pasta"
+- **Dietary Accommodations**: "Find vegan options" or "Show me dairy-free items"
 
 ## 🗺️ Roadmap
 
@@ -291,31 +177,19 @@ AskBucky returns structured JSON responses with:
 - [ ] **Voice Interface**: Speech-to-text and text-to-speech capabilities
 - [ ] **Personalization**: User preference learning and recommendations
 - [ ] **Social Features**: Share meals and recommendations with friends
-- [ ] **Integration APIs**: Connect with meal tracking and fitness apps
 - [ ] **RecWell Integration**: Gym schedules, fitness classes, and facility information
-- [ ] **Campus Events**: Integration with today.wisc.edu for university events and activities
+- [ ] **Campus Events**: Integration with today.wisc.edu for university events
 - [ ] **Academic Resources**: Course information, library services, and study spaces
 - [ ] **Transportation**: Bus schedules, parking, and campus navigation
-- [ ] **Unified UW-Madison Platform**: One-stop-shop for all campus services and information
+- [ ] **Unified UW-Madison Platform**: One-stop-shop for all campus services
 
 ### Planned Enhancements
 - [ ] **Multi-language Support**: Spanish, Chinese, and other languages
 - [ ] **Advanced Analytics**: Nutritional trend analysis and insights
 - [ ] **Recipe Suggestions**: Cooking instructions and modifications
 - [ ] **Allergen Alerts**: Real-time allergen warnings and substitutions
-- [ ] **Sustainability Features**: Environmental impact information
-
-### Technical Improvements
-- [ ] **Performance Optimization**: Faster query processing and response times
-- [ ] **Offline Support**: Local caching for offline menu access
-- [ ] **Advanced Search**: Semantic search with image recognition
-- [ ] **API Rate Limiting**: Improved scalability and resource management
-
-See the [open issues](https://github.com/pooosh/AskBucky/issues) for a full list of proposed features and known issues.
 
 ## 🤝 Contributing
-
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are greatly appreciated.
 
 ### How to Contribute
 
@@ -335,29 +209,19 @@ Contributions are what make the open source community such an amazing place to l
 
 2. **Set up development environment**
    ```bash
+   cd NLWeb
    python -m venv dev_env
    source dev_env/bin/activate
-   pip install -r NLWeb/requirements.txt
-   pip install -r NLWeb/requirements-dev.txt
+   pip install -r requirements.txt
+   pip install -r requirements-dev.txt
    ```
 
 3. **Run tests**
    ```bash
-   python -m pytest NLWeb/tests/
+   python -m pytest tests/
    ```
 
-4. **Check code quality**
-   ```bash
-   flake8 NLWeb/code/
-   black NLWeb/code/
-   ```
-
-### Contribution Guidelines
-
-- **Code Style**: Follow PEP 8 and use Black for formatting
-- **Testing**: Write tests for new features and ensure all tests pass
-- **Documentation**: Update documentation for any API changes
-- **Issues**: Use the issue tracker for bugs and feature requests
+**For detailed development guidelines, contribution areas, and technical documentation, see the [NLWeb-AskBucky README](https://github.com/pooosh/NLWeb-AskBucky#readme).**
 
 ### Top Contributors
 
@@ -376,7 +240,7 @@ Project Link: [https://github.com/pooosh/AskBucky](https://github.com/pooosh/Ask
 ## 🙏 Acknowledgments
 
 ### Open Source Libraries
-- [NLWeb](https://github.com/microsoft/nlweb) - The foundational framework
+- [NLWeb](https://github.com/nlweb-ai/NLWeb) - The foundational framework
 - [AIOHTTP](https://aiohttp.readthedocs.io/) - Asynchronous web framework
 - [Schema.org](https://schema.org/) - Structured data vocabulary
 - [OpenAI](https://openai.com/) - Language model APIs
@@ -390,31 +254,9 @@ Project Link: [https://github.com/pooosh/AskBucky](https://github.com/pooosh/Ask
 - **Open Source Contributors** - For continuous improvements
 - **University Community** - For feedback and testing
 
-### Resources
-- [Choose an Open Source License](https://choosealicense.com/)
-- [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet/)
-- [Img Shields](https://shields.io/)
-- [GitHub Pages](https://pages.github.com/)
-- [Font Awesome](https://fontawesome.com/)
-- [React Icons](https://react-icons.github.io/react-icons/)
-
 ---
 
 <div align="center">
   <p>Made with ❤️ by the AskBucky Team</p>
   <p>Star this repository if you found it helpful!</p>
-</div>
-
-<!-- MARKDOWN LINKS & IMAGES -->
-[contributors-shield]: https://img.shields.io/github/contributors/pooosh/AskBucky.svg?style=for-the-badge
-[contributors-url]: https://github.com/pooosh/AskBucky/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/pooosh/AskBucky.svg?style=for-the-badge
-[forks-url]: https://github.com/pooosh/AskBucky/network/members
-[stargazers-shield]: https://img.shields.io/github/stars/pooosh/AskBucky.svg?style=for-the-badge
-[stargazers-url]: https://github.com/pooosh/AskBucky/stargazers
-[issues-shield]: https://img.shields.io/github/issues/pooosh/AskBucky.svg?style=for-the-badge
-[issues-url]: https://github.com/pooosh/AskBucky/issues
-[license-shield]: https://img.shields.io/github/license/pooosh/AskBucky.svg?style=for-the-badge
-[license-url]: https://github.com/pooosh/AskBucky/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/your-linkedin 
+</div> 
