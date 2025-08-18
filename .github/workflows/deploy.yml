@@ -44,9 +44,21 @@ jobs:
           ls -la
           echo "Dockerfiles I can see:"
           find . -maxdepth 3 -type f -name 'Dockerfile' -print || true
+          echo "Current directory contents:"
+          ls -la
+          echo "Checking if Dockerfile exists:"
+          if [[ -f "Dockerfile" ]]; then
+            echo "✅ Dockerfile found in current directory"
+            cat Dockerfile | head -5
+          else
+            echo "❌ Dockerfile NOT found in current directory"
+          fi
 
       - name: Build container
-        run: docker build -f "Dockerfile" -t "${{ env.IMAGE }}" .
+        run: |
+          echo "Building from directory: $(pwd)"
+          echo "Dockerfile exists: $([[ -f Dockerfile ]] && echo 'YES' || echo 'NO')"
+          docker build -f "Dockerfile" -t "${{ env.IMAGE }}" .
 
       - name: Push container
         run: docker push "${{ env.IMAGE }}"
