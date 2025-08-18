@@ -95,6 +95,9 @@ jobs:
           NLWEB_CACHE_DIR: "/app/NLWeb/.cache"
           QDRANT_URL: "${{ secrets.QDRANT_URL }}"
           QDRANT_API_KEY: "${{ secrets.QDRANT_API_KEY }}"
+          QDRANT_COLLECTION: "askbucky"
+          EMBEDDING_MODEL: "text-embedding-3-small"
+          EMBEDDING_DIM: "1536"
           EOF
 
           gcloud run deploy "${{ env.SERVICE }}" \
