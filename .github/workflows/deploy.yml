@@ -45,25 +45,8 @@ jobs:
           echo "Dockerfiles I can see:"
           find . -maxdepth 3 -type f -name 'Dockerfile' -print || true
 
-      - name: Locate Dockerfile
-        id: df
-        shell: bash
-        run: |
-          set -euo pipefail
-          # Prioritize the root Dockerfile for AskBucky project
-          if [[ -f "Dockerfile" ]]; then
-            echo "Using Dockerfile: Dockerfile (root)"
-            echo "dockerfile=Dockerfile" >> "$GITHUB_OUTPUT"
-          elif [[ -f "NLWeb/Dockerfile" ]]; then
-            echo "Using Dockerfile: NLWeb/Dockerfile"
-            echo "dockerfile=NLWeb/Dockerfile" >> "$GITHUB_OUTPUT"
-          else
-            echo "No suitable Dockerfile found" >&2
-            exit 1
-          fi
-
       - name: Build container
-        run: docker build -f "${{ steps.df.outputs.dockerfile }}" -t "${{ env.IMAGE }}" .
+        run: docker build -f "Dockerfile" -t "${{ env.IMAGE }}" .
 
       - name: Push container
         run: docker push "${{ env.IMAGE }}"
