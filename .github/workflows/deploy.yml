@@ -1,0 +1,71 @@
+name: Build & Deploy to Cloud Run
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch: {}
+
+env:
+  PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
+  REGION: ${{ vars.GCP_REGION }}
+  REPO_NAME: ${{ vars.ARTIFACT_REPO }}
+  SERVICE: ${{ vars.SERVICE_NAME }}
+  IMAGE: ${{ vars.GCP_REGION }}-docker.pkg.dev/${{ vars.GCP_PROJECT_ID }}/${{ vars.ARTIFACT_REPO }}/${{ vars.SERVICE_NAME }}:${{ github.sha }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout (with submodules)
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          # Uses your PAT if present; falls back to default token for public submodules
+          token: ${{ secrets.GIT_PAT || github.token }}
+
+      - name: Authenticate to Google Cloud (service account key)
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Install gcloud
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ env.PROJECT_ID }}
+
+      - name: Configure Docker for Artifact Registry
+        run: gcloud auth configure-docker "${{ env.REGION }}-docker.pkg.dev" --quiet
+
+      - name: Build container
+        run: docker build -t "${{ env.IMAGE }}" .
+
+      - name: Push container
+        run: docker push "${{ env.IMAGE }}"
+
+      - name: Deploy to Cloud Run
+        shell: bash
+        run: |
+          # Escape commas in list-type vars so gcloud doesn't split them
+          DINING_ESCAPED=$(printf %s "${{ vars.DINING_HALL_SLUGS }}" | sed 's/,/\\,/g')
+          MEALTYPES_ESCAPED=$(printf %s "${{ vars.MEAL_TYPES }}" | sed 's/,/\\,/g')
+
+          gcloud run deploy "${{ env.SERVICE }}" \
+            --image "${{ env.IMAGE }}" \
+            --region "${{ env.REGION }}" \
+            --platform managed \
+            --allow-unauthenticated \
+            --set-env-vars "PORT=8080" \
+            --set-env-vars "ENVIRONMENT=prod" \
+            --set-env-vars "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" \
+            --set-env-vars "NUTRISLICE_API_URL=${{ vars.NUTRISLICE_API_URL }}" \
+            --set-env-vars "DINING_HALL_SLUGS=${DINING_ESCAPED}" \
+            --set-env-vars "MEAL_TYPES=${MEALTYPES_ESCAPED}" \
+            --quiet
+
+      - name: Show service URL
+        run: |
+          URL=$(gcloud run services describe "${{ env.SERVICE }}" --region "${{ env.REGION }}" --format='value(status.url)')
+          echo "Cloud Run URL: $URL"
