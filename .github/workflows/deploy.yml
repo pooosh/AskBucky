@@ -90,7 +90,6 @@ jobs:
           NLWEB_CONFIG_DIR: "/app/NLWeb/config"
           NLWEB_OUTPUT_DIR: "/app"
           PYTHONPATH: "/app/NLWeb/code/python"
-          OPENAI_API_KEY: "${{ secrets.OPENAI_API_KEY }}"
           NUTRISLICE_API_URL: "${{ vars.NUTRISLICE_API_URL }}"
           DINING_HALL_SLUGS: "${{ vars.DINING_HALL_SLUGS }}"
           MEAL_TYPES: "${{ vars.MEAL_TYPES }}"
@@ -98,8 +97,6 @@ jobs:
           JSONLD_DIR: "/app/NLWeb/data/jsonld"
           NLWEB_JSON_DATA_DIR: "/app/NLWeb/data/jsonld"
           NLWEB_CACHE_DIR: "/app/NLWeb/.cache"
-          QDRANT_URL: "${{ secrets.QDRANT_URL }}"
-          QDRANT_API_KEY: "${{ secrets.QDRANT_API_KEY }}"
           QDRANT_COLLECTION: "askbucky"
           EMBEDDING_MODEL: "text-embedding-3-small"
           EMBEDDING_DIM: "1536"
@@ -111,6 +108,7 @@ jobs:
             --platform managed \
             --allow-unauthenticated \
             --env-vars-file env.yaml \
+            --set-secrets OPENAI_API_KEY=OPENAI_API_KEY:latest,QDRANT_API_KEY=QDRANT_API_KEY:latest,QDRANT_URL=QDRANT_URL:latest \
             --quiet
 
       - name: Show service URL
