@@ -50,25 +50,17 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          candidates=(
-            "Dockerfile"
-            "AskBucky/Dockerfile"
-            "NLWeb/Dockerfile"
-            "docker/Dockerfile"
-          )
-          found=""
-          for f in "${candidates[@]}"; do
-            if [[ -f "$f" ]]; then
-              found="$f"
-              break
-            fi
-          done
-          if [[ -z "$found" ]]; then
-            echo "No Dockerfile found in: ${candidates[*]}" >&2
+          # Prioritize the root Dockerfile for AskBucky project
+          if [[ -f "Dockerfile" ]]; then
+            echo "Using Dockerfile: Dockerfile (root)"
+            echo "dockerfile=Dockerfile" >> "$GITHUB_OUTPUT"
+          elif [[ -f "NLWeb/Dockerfile" ]]; then
+            echo "Using Dockerfile: NLWeb/Dockerfile"
+            echo "dockerfile=NLWeb/Dockerfile" >> "$GITHUB_OUTPUT"
+          else
+            echo "No suitable Dockerfile found" >&2
             exit 1
           fi
-          echo "Using Dockerfile: $found"
-          echo "dockerfile=$found" >> "$GITHUB_OUTPUT"
 
       - name: Build container
         run: docker build -f "${{ steps.df.outputs.dockerfile }}" -t "${{ env.IMAGE }}" .
