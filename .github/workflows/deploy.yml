@@ -72,9 +72,14 @@ jobs:
 
       - name: Build container
         run: docker build -f "${{ steps.df.outputs.dockerfile }}" -t "${{ env.IMAGE }}" .
-
       - name: Push container
         run: docker push "${{ env.IMAGE }}"
+
+      - name: Tag image for Jobs
+        run: |
+          JOB_IMAGE="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/${{ env.SERVICE }}:jobs"
+          docker tag "${{ env.IMAGE }}" "$JOB_IMAGE"
+          docker push "$JOB_IMAGE"
       - name: Deploy to Cloud Run
         shell: bash
         run: |
