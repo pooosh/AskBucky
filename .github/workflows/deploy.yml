@@ -23,7 +23,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: recursive
-          # Uses your PAT if present; falls back to default token for public submodules
           token: ${{ secrets.GIT_PAT || github.token }}
 
       - name: Authenticate to Google Cloud (service account key)
@@ -39,8 +38,40 @@ jobs:
       - name: Configure Docker for Artifact Registry
         run: gcloud auth configure-docker "${{ env.REGION }}-docker.pkg.dev" --quiet
 
+      - name: Show repo tree (debug)
+        run: |
+          pwd
+          ls -la
+          echo "Dockerfiles I can see:"
+          find . -maxdepth 3 -type f -name 'Dockerfile' -print || true
+
+      - name: Locate Dockerfile
+        id: df
+        shell: bash
+        run: |
+          set -euo pipefail
+          candidates=(
+            "Dockerfile"
+            "AskBucky/Dockerfile"
+            "NLWeb/Dockerfile"
+            "docker/Dockerfile"
+          )
+          found=""
+          for f in "${candidates[@]}"; do
+            if [[ -f "$f" ]]; then
+              found="$f"
+              break
+            fi
+          done
+          if [[ -z "$found" ]]; then
+            echo "No Dockerfile found in: ${candidates[*]}" >&2
+            exit 1
+          fi
+          echo "Using Dockerfile: $found"
+          echo "dockerfile=$found" >> "$GITHUB_OUTPUT"
+
       - name: Build container
-        run: docker build -t "${{ env.IMAGE }}" .
+        run: docker build -f "${{ steps.df.outputs.dockerfile }}" -t "${{ env.IMAGE }}" .
 
       - name: Push container
         run: docker push "${{ env.IMAGE }}"
@@ -48,24 +79,31 @@ jobs:
       - name: Deploy to Cloud Run
         shell: bash
         run: |
-          # Escape commas in list-type vars so gcloud doesn't split them
           DINING_ESCAPED=$(printf %s "${{ vars.DINING_HALL_SLUGS }}" | sed 's/,/\\,/g')
           MEALTYPES_ESCAPED=$(printf %s "${{ vars.MEAL_TYPES }}" | sed 's/,/\\,/g')
-
           gcloud run deploy "${{ env.SERVICE }}" \
             --image "${{ env.IMAGE }}" \
             --region "${{ env.REGION }}" \
             --platform managed \
             --allow-unauthenticated \
             --set-env-vars "PORT=8080" \
+            --set-env-vars "HOST=0.0.0.0" \
             --set-env-vars "ENVIRONMENT=prod" \
+            --set-env-vars "NLWEB_CONFIG_DIR=/app/NLWeb/config" \
+            --set-env-vars "NLWEB_OUTPUT_DIR=/app" \
+            --set-env-vars "PYTHONPATH=/app/NLWeb/code/python" \
             --set-env-vars "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" \
             --set-env-vars "NUTRISLICE_API_URL=${{ vars.NUTRISLICE_API_URL }}" \
             --set-env-vars "DINING_HALL_SLUGS=${DINING_ESCAPED}" \
             --set-env-vars "MEAL_TYPES=${MEALTYPES_ESCAPED}" \
+            --set-env-vars "RAW_DIR=/app/NLWeb/raw_menus" \
+            --set-env-vars "JSONLD_DIR=/app/NLWeb/data/jsonld" \
+            --set-env-vars "NLWEB_JSON_DATA_DIR=/app/NLWeb/data/jsonld" \
+            --set-env-vars "NLWEB_CACHE_DIR=/app/NLWeb/.cache" \
             --quiet
 
       - name: Show service URL
         run: |
           URL=$(gcloud run services describe "${{ env.SERVICE }}" --region "${{ env.REGION }}" --format='value(status.url)')
           echo "Cloud Run URL: $URL"
+          echo "Cloud Run URL: $URL" >> $GITHUB_STEP_SUMMARY
