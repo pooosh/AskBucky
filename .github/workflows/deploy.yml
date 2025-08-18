@@ -68,7 +68,6 @@ jobs:
         run: |
           # Create environment variables file to avoid gcloud syntax issues
           cat > env.yaml << EOF
-          PORT: "8080"
           HOST: "0.0.0.0"
           ENVIRONMENT: "prod"
           NLWEB_CONFIG_DIR: "/app/NLWeb/config"
