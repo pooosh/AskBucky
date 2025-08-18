@@ -105,11 +105,7 @@ jobs:
             --env-vars-file env.yaml \
             --quiet
 
-      - name: Show service URL
-        run: |
-          URL=$(gcloud run services describe "${{ env.SERVICE }}" --region "${{ env.REGION }}" --format='value(status.url)')
-          echo "Cloud Run URL: $URL"
-          echo "Cloud Run URL: $URL" >> $GITHUB_STEP_SUMMARY
+      - name:      - name: Show service URL
         run: |
           URL=$(gcloud run services describe "${{ env.SERVICE }}" --region "${{ env.REGION }}" --format='value(status.url)')
           echo "Cloud Run URL: $URL"
