@@ -66,8 +66,6 @@ jobs:
       - name: Deploy to Cloud Run
         shell: bash
         run: |
-          DINING_ESCAPED=$(printf %s "${{ vars.DINING_HALL_SLUGS }}" | sed 's/,/\\,/g')
-          MEALTYPES_ESCAPED=$(printf %s "${{ vars.MEAL_TYPES }}" | sed 's/,/\\,/g')
           gcloud run deploy "${{ env.SERVICE }}" \
             --image "${{ env.IMAGE }}" \
             --region "${{ env.REGION }}" \
@@ -81,8 +79,8 @@ jobs:
             --set-env-vars "PYTHONPATH=/app/NLWeb/code/python" \
             --set-env-vars "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" \
             --set-env-vars "NUTRISLICE_API_URL=${{ vars.NUTRISLICE_API_URL }}" \
-            --set-env-vars "DINING_HALL_SLUGS=${DINING_ESCAPED}" \
-            --set-env-vars "MEAL_TYPES=${MEALTYPES_ESCAPED}" \
+            --set-env-vars "DINING_HALL_SLUGS=${{ vars.DINING_HALL_SLUGS }}" \
+            --set-env-vars "MEAL_TYPES=${{ vars.MEAL_TYPES }}" \
             --set-env-vars "RAW_DIR=/app/NLWeb/raw_menus" \
             --set-env-vars "JSONLD_DIR=/app/NLWeb/data/jsonld" \
             --set-env-vars "NLWEB_JSON_DATA_DIR=/app/NLWeb/data/jsonld" \
