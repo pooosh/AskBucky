@@ -75,28 +75,41 @@ jobs:
 
       - name: Push container
         run: docker push "${{ env.IMAGE }}"
-
       - name: Deploy to Cloud Run
         shell: bash
         run: |
-          DINING_ESCAPED=$(printf %s "${{ vars.DINING_HALL_SLUGS }}" | sed 's/,/\\,/g')
-          MEALTYPES_ESCAPED=$(printf %s "${{ vars.MEAL_TYPES }}" | sed 's/,/\\,/g')
+          # Create environment variables file to avoid gcloud syntax issues
+          cat > env.yaml << EOF
+          HOST: "0.0.0.0"
+          ENVIRONMENT: "prod"
+          NLWEB_CONFIG_DIR: "/app/NLWeb/config"
+          NLWEB_OUTPUT_DIR: "/app"
+          PYTHONPATH: "/app/NLWeb/code/python"
+          OPENAI_API_KEY: "${{ secrets.OPENAI_API_KEY }}"
+          NUTRISLICE_API_URL: "${{ vars.NUTRISLICE_API_URL }}"
+          DINING_HALL_SLUGS: "${{ vars.DINING_HALL_SLUGS }}"
+          MEAL_TYPES: "${{ vars.MEAL_TYPES }}"
+          RAW_DIR: "/app/NLWeb/raw_menus"
+          JSONLD_DIR: "/app/NLWeb/data/jsonld"
+          NLWEB_JSON_DATA_DIR: "/app/NLWeb/data/jsonld"
+          NLWEB_CACHE_DIR: "/app/NLWeb/.cache"
+          QDRANT_URL: "${{ secrets.QDRANT_URL }}"
+          QDRANT_API_KEY: "${{ secrets.QDRANT_API_KEY }}"
+          EOF
+
           gcloud run deploy "${{ env.SERVICE }}" \
             --image "${{ env.IMAGE }}" \
             --region "${{ env.REGION }}" \
             --platform managed \
             --allow-unauthenticated \
-            --set-env-vars "PORT=8080" \
-            --set-env-vars "ENVIRONMENT=prod" \
-            --set-env-vars "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" \
-            --set-env-vars "QDRANT_URL=${{ secrets.QDRANT_URL }}" \
-            --set-env-vars "QDRANT_API_KEY=${{ secrets.QDRANT_API_KEY }}" \
-            --set-env-vars "NUTRISLICE_API_URL=${{ vars.NUTRISLICE_API_URL }}" \
-            --set-env-vars "DINING_HALL_SLUGS=${DINING_ESCAPED}" \
-            --set-env-vars "MEAL_TYPES=${MEALTYPES_ESCAPED}" \
+            --env-vars-file env.yaml \
             --quiet
 
       - name: Show service URL
+        run: |
+          URL=$(gcloud run services describe "${{ env.SERVICE }}" --region "${{ env.REGION }}" --format='value(status.url)')
+          echo "Cloud Run URL: $URL"
+          echo "Cloud Run URL: $URL" >> $GITHUB_STEP_SUMMARY
         run: |
           URL=$(gcloud run services describe "${{ env.SERVICE }}" --region "${{ env.REGION }}" --format='value(status.url)')
           echo "Cloud Run URL: $URL"
