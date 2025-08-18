@@ -1,0 +1,15 @@
+.git
+.gitmodules
+**/.git
+__pycache__/
+*.py[cod]
+*.egg-info/
+.env
+.env.*
+node_modules/
+.vscode/
+.idea/
+*.log
+.dist/
+build/
+dist/

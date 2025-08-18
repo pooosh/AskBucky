@@ -44,21 +44,34 @@ jobs:
           ls -la
           echo "Dockerfiles I can see:"
           find . -maxdepth 3 -type f -name 'Dockerfile' -print || true
-          echo "Current directory contents:"
-          ls -la
-          echo "Checking if Dockerfile exists:"
-          if [[ -f "Dockerfile" ]]; then
-            echo "✅ Dockerfile found in current directory"
-            cat Dockerfile | head -5
-          else
-            echo "❌ Dockerfile NOT found in current directory"
+
+      - name: Locate Dockerfile
+        id: df
+        shell: bash
+        run: |
+          set -euo pipefail
+          candidates=(
+            "Dockerfile"
+            "AskBucky/Dockerfile"
+            "NLWeb/Dockerfile"
+            "docker/Dockerfile"
+          )
+          found=""
+          for f in "${candidates[@]}"; do
+            if [[ -f "$f" ]]; then
+              found="$f"
+              break
+            fi
+          done
+          if [[ -z "$found" ]]; then
+            echo "No Dockerfile found in: ${candidates[*]}" >&2
+            exit 1
           fi
+          echo "Using Dockerfile: $found"
+          echo "dockerfile=$found" >> "$GITHUB_OUTPUT"
 
       - name: Build container
-        run: |
-          echo "Building from directory: $(pwd)"
-          echo "Dockerfile exists: $([[ -f Dockerfile ]] && echo 'YES' || echo 'NO')"
-          docker build -f "Dockerfile" -t "${{ env.IMAGE }}" .
+        run: docker build -f "${{ steps.df.outputs.dockerfile }}" -t "${{ env.IMAGE }}" .
 
       - name: Push container
         run: docker push "${{ env.IMAGE }}"
@@ -66,29 +79,21 @@ jobs:
       - name: Deploy to Cloud Run
         shell: bash
         run: |
-          # Create environment variables file to avoid gcloud syntax issues
-          cat > env.yaml << EOF
-          HOST: "0.0.0.0"
-          ENVIRONMENT: "prod"
-          NLWEB_CONFIG_DIR: "/app/NLWeb/config"
-          NLWEB_OUTPUT_DIR: "/app"
-          PYTHONPATH: "/app/NLWeb/code/python"
-          OPENAI_API_KEY: "${{ secrets.OPENAI_API_KEY }}"
-          NUTRISLICE_API_URL: "${{ vars.NUTRISLICE_API_URL }}"
-          DINING_HALL_SLUGS: "${{ vars.DINING_HALL_SLUGS }}"
-          MEAL_TYPES: "${{ vars.MEAL_TYPES }}"
-          RAW_DIR: "/app/NLWeb/raw_menus"
-          JSONLD_DIR: "/app/NLWeb/data/jsonld"
-          NLWEB_JSON_DATA_DIR: "/app/NLWeb/data/jsonld"
-          NLWEB_CACHE_DIR: "/app/NLWeb/.cache"
-          EOF
-          
+          DINING_ESCAPED=$(printf %s "${{ vars.DINING_HALL_SLUGS }}" | sed 's/,/\\,/g')
+          MEALTYPES_ESCAPED=$(printf %s "${{ vars.MEAL_TYPES }}" | sed 's/,/\\,/g')
           gcloud run deploy "${{ env.SERVICE }}" \
             --image "${{ env.IMAGE }}" \
             --region "${{ env.REGION }}" \
             --platform managed \
             --allow-unauthenticated \
-            --env-vars-file env.yaml \
+            --set-env-vars "PORT=8080" \
+            --set-env-vars "ENVIRONMENT=prod" \
+            --set-env-vars "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" \
+            --set-env-vars "QDRANT_URL=${{ secrets.QDRANT_URL }}" \
+            --set-env-vars "QDRANT_API_KEY=${{ secrets.QDRANT_API_KEY }}" \
+            --set-env-vars "NUTRISLICE_API_URL=${{ vars.NUTRISLICE_API_URL }}" \
+            --set-env-vars "DINING_HALL_SLUGS=${DINING_ESCAPED}" \
+            --set-env-vars "MEAL_TYPES=${MEALTYPES_ESCAPED}" \
             --quiet
 
       - name: Show service URL
