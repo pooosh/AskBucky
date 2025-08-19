@@ -5,9 +5,9 @@
   <h3>Your UW-Madison AI Dining Companion</h3>
   <p>AskBucky is an intelligent conversational interface that helps you discover, explore, and plan your dining experience with comprehensive menu information and nutritional insights.</p>
   
-  <a href="#www.askbucky.com">View Demo</a> •
-  <a href="#https://forms.gle/eZrJ5zyoJzoeGNSN7">Report Bug</a> •
-  <a href="#https://forms.gle/hEvYrQEgcgFP376j8">Request Feature</a>
+  <a href="https://www.askbucky.com">View Demo</a> •
+  <a href="https://forms.gle/eZrJ5zyoJzoeGNSN7">Report Bug</a> •
+  <a href="https://forms.gle/hEvYrQEgcgFP376j8">Request Feature</a>
 </div>
 
 ## 🔧 Technical Implementation
