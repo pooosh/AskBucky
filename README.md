@@ -1,7 +1,7 @@
 # AskBucky 🍽️
 
 <div align="center">
-  <img src="askbuckylogo.png" alt="AskBucky Logo" width="200"/>
+  <img src="askbuckylogo.png" alt="AskBucky Logo" width="350"/>
   <h3>Your UW-Madison AI Dining Companion</h3>
   <p>AskBucky is an intelligent conversational interface that helps you discover, explore, and plan your dining experience with comprehensive menu information and nutritional insights.</p>
   
